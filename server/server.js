@@ -84,7 +84,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
     return res.status(400).json({ error: 'No file uploaded' });
   }
   res.json({ 
-    imageUrl: `https://chatapp-by-shree.vercel.app/uploads/${req.file.filename}` 
+    imageUrl: `https://chat-app-qz5o.onrender.com/uploads/${req.file.filename}` 
   });
 });
 
