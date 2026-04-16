@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "chatapp-by-shree.vercel.app",
+    origin: "https://chatapp-by-shree.vercel.app",
     methods: ["GET", "POST"]
   }
 });
@@ -84,6 +84,12 @@ app.post('/upload', upload.single('image'), (req, res) => {
     return res.status(400).json({ error: 'No file uploaded' });
   }
   res.json({ 
-    imageUrl: `chatapp-by-shree.vercel.app/uploads/${req.file.filename}` 
+    imageUrl: `https://chatapp-by-shree.vercel.app/uploads/${req.file.filename}` 
   });
+});
+
+const PORT = 3000;
+
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
