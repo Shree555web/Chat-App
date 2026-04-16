@@ -84,6 +84,6 @@ app.post('/upload', upload.single('image'), (req, res) => {
     return res.status(400).json({ error: 'No file uploaded' });
   }
   res.json({ 
-    imageUrl: `http://localhost:3001/uploads/${req.file.filename}` 
+    imageUrl: `chatapp-by-shree.vercel.app/uploads/${req.file.filename}` 
   });
 });
