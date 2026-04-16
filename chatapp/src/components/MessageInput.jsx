@@ -13,7 +13,7 @@ const MessageInput = ({ onSendMessage, currentUser }) => {
     formData.append('image', file);
 
     try {
-      const response = await axios.post('http://localhost:3001/upload', formData, {
+      const response = await axios.post('https://chat-app-qz5o.onrender.com/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
