@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "chatapp-by-shree.vercel.app",
     methods: ["GET", "POST"]
   }
 });
@@ -86,9 +86,4 @@ app.post('/upload', upload.single('image'), (req, res) => {
   res.json({ 
     imageUrl: `http://localhost:3001/uploads/${req.file.filename}` 
   });
-});
-
-const PORT = 3001;
-server.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
