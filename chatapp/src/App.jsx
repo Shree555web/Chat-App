@@ -37,22 +37,19 @@ function App() {
   const handleJoin = () => {
     const userName = username.trim() || `User${Math.floor(Math.random() * 1000)}`;
     if (userName) {
+      socket.connect();
       setCurrentUser(userName);
       setShowLogin(false);
-      
+
       // Join socket room
-      socket.emit('join', { 
+      socket.emit('join', {
         username: userName,
-        id: socket.id 
+        id: socket.id
       });
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleJoin(); // Only join on Enter, NOT on every keypress
-    }
-  };
+
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -73,13 +70,13 @@ function App() {
   if (showLogin) {
     return (
       <div className="min-vh-100 d-flex align-items-center justify-content-center bg-gradient">
-        <div className="card p-5 shadow-lg mx-3" style={{maxWidth: '400px', width: '100%'}}>
+        <div className="card p-5 shadow-lg mx-3" style={{ maxWidth: '400px', width: '100%' }}>
           <div className="text-center mb-4">
             <i className="fas fa-comments fa-3x text-primary mb-3"></i>
             <h3 className="text-primary mb-1">Real-Time Chat</h3>
             <p className="text-muted">Enter your name to start chatting</p>
           </div>
-          
+
           <div className="mb-4">
             <div className="input-group input-group-lg">
               <span className="input-group-text">
@@ -91,7 +88,9 @@ function App() {
                 placeholder="Your name (e.g., John)"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleJoin();
+                }}
                 maxLength={20}
                 autoFocus
               />
@@ -100,7 +99,7 @@ function App() {
               Press Enter or click Join • {onlineUsers.length} online
             </small>
           </div>
-          
+
           <button
             className="btn btn-primary w-100 btn-lg py-3"
             onClick={handleJoin}
@@ -108,7 +107,7 @@ function App() {
             <i className="fas fa-rocket me-2"></i>
             Join Chat
           </button>
-          
+
           <div className="mt-3 text-center">
             <small className="text-muted">
               Demo users online: {onlineUsers.map(u => u.username).join(', ')}
@@ -132,14 +131,14 @@ function App() {
               </h5>
               <small>{onlineUsers.length} users online</small>
             </div>
-            <button 
+            <button
               className="btn btn-outline-light btn-sm"
               onClick={() => {
                 setShowLogin(true);
                 setUsername('');
                 setCurrentUser('');
                 setMessages([]);
-                socket.emit('disconnect');
+                socket.disconnect();
               }}
             >
               <i className="fas fa-sign-out-alt"></i> Leave
@@ -151,7 +150,7 @@ function App() {
       <div className="flex-grow-1 container py-4">
         <div className="row justify-content-center">
           <div className="col-lg-9 col-xl-7">
-            <ChatWindow 
+            <ChatWindow
               messages={messages}
               currentUser={currentUser}
               messagesEndRef={messagesEndRef}
